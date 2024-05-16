@@ -1,0 +1,30 @@
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.projectName | lower}}-istio-ingress
+  namespace: istio-system
+  annotations:
+    kubernetes.io/ingress.class: 'alb'
+    alb.ingress.kubernetes.io/scheme: 'internet-facing'
+    alb.ingress.kubernetes.io/certificate-arn: '{{ .Values.ingress_certificateArn }}'
+    external-dns.alpha.kubernetes.io/hostname: '{{  .Values.domain }}'
+    alb.ingress.kubernetes.io/healthcheck-path: '/healthz/ready'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    external-dns.alpha.kubernetes.io/alias: 'true'
+    alb.ingress.kubernetes.io/tags: 'createdBy={{ .Values.projectName | lower}} , nuker=no'
+    alb.ingress.kubernetes.io/load-balancer-attributes: 'routing.http.drop_invalid_header_fields.enabled=true'
+spec:
+  rules:
+  - host: {{  .Values.domain }}
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: istio-ingressgateway
+            port:
+              number: 80                    

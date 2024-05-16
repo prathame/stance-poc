@@ -1,0 +1,61 @@
+ {{- if .Values.virtualService }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  annotations:
+  name: {{ include "oathkeeper.fullname" . }}-virtualservice
+  namespace: default
+spec:
+  gateways:
+  - {{ .Values.virtualService.gateways }}
+  hosts:
+  - {{ .Values.domain }}
+  http:
+  - corsPolicy:
+      allowHeaders:
+      - sec-ch-ua
+      - sec-ch-ua-mobile
+      - sec-ch-ua-platform
+      - access-control-allow-origin
+      - grpc-timeout
+      - keep-alive
+      - content-type
+      - content-transfer-encoding
+      - custom-header-1
+      - x-accept-content-transfer-encoding
+      - x-accept-response-streaming
+      - x-user-agent
+      - x-grpc-web
+      - authorization
+      - request
+      - authority
+      - pragma
+      - cache-control
+      - accept
+      - access-control-request-method
+      - access-control-request-headers
+      - origin
+      - user-agent
+      - sec-fetch-mode
+      - sec-fetch-site
+      - sec-fetch-dest
+      - referer
+      - accept-language
+      allowMethods:
+      - POST
+      - GET
+      - OPTIONS
+      - PUT
+      - DELETE
+      allowOrigins:
+      - regex: .*
+    match:
+    - uri:
+        prefix: /
+    name: {{ include "oathkeeper.fullname" . }}-route
+    route:
+    - destination:
+        host: {{ include "oathkeeper.fullname" . }}-proxy.{{ .Release.Namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.service.proxy.port }}
+{{- end }}

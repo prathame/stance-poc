@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - >-
+        function ssm_run() {
+          aws ssm send-command --instance-ids "i-06f017ca5440cb623"
+          --document-name "AWS-RunShellScript"
+          --parameters commands=[$1]
+          --output text
+        }
+      - echo "Setup complete."
+
+  build:
+    commands:
+      - ssm_run "echo 'Hello, CodeBuild!' > /tmp/testfile.txt"
+
+  post_build:
+    commands:
+      - echo "Test file creation command executed on bastion host."

@@ -1,0 +1,7 @@
+# Default values for istio-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+projectName: "stance-dev"
+domain:  "aws.coauth.io"
+ingress_certificateArn: "arn:aws:acm:ap-south-1:543332486884:certificate/ad0d71e3-4649-426c-bf29-1edde8c9f16a"

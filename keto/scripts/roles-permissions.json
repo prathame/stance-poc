@@ -1,0 +1,37 @@
+{
+  "roles": {
+    "Basic":[
+      "constellation-map",
+      "correlation-service",
+      "document-service",
+      "evidence-service",
+      "user-service",
+      "taxonomy-service",
+      "workflow-service",
+      "cockpit-service"
+    ],
+    "Developer": [
+      "release-cockpit",
+      "evidence-ui",
+      "component-catalog-read",
+      "component-catalog-write"
+    ],
+    "Compliance-Officer": [
+      "document-ingest",
+      "compliance-report",
+      "taxonomy-table",
+      "document-mapping-service",
+      "document-mapping"
+    ],
+    "IT-officer": [ 
+      "workflow-approve",
+      "taxonomy-table",
+      "release-cockpit",
+      "component-catalog-read"
+    ],
+    "Solution-Architect": [
+      "release-cockpit"
+    ]
+
+  }
+}
